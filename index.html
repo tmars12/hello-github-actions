@@ -3,698 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08111f" />
   <title>Talent Vote Board</title>
   <style>
-    :root {
-      --bg: #08111f;
-      --panel: #111c2c;
-      --panel-2: #16263e;
-      --line: rgba(255,255,255,0.12);
-      --text: #ecf5ff;
-      --muted: #a8bbd5;
-      --gold: #f6c85f;
-      --lime: #9ef0b0;
-      --pink: #ff9ec8;
-      --cyan: #92d7ff;
-      --shadow: rgba(0,0,0,0.28);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #08111f 0%, #101b2d 45%, #0c1d27 100%);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 18px 52px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .brand {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-
-    .brand span {
-      color: var(--gold);
-    }
-
-    .status {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(146, 215, 255, 0.08);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .card {
-      background: rgba(17, 28, 44, 0.88);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: 0 14px 30px var(--shadow);
-    }
-
-    .hero-copy {
-      padding: 22px 24px;
-    }
-
-    .eyebrow {
-      color: var(--cyan);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.73rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2.3rem, 5vw, 4.2rem);
-      line-height: 0.96;
-      letter-spacing: -0.06em;
-    }
-
-    .hero-copy p {
-      margin: 16px 0 0;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.6;
-      max-width: 32rem;
-    }
-
-    .summary-panel {
-      padding: 22px 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .mini-label {
-      font-size: 0.76rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .winner-box {
-      padding: 18px 16px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(246, 200, 95, 0.18), rgba(255, 158, 200, 0.08));
-      border: 1px solid rgba(246, 200, 95, 0.35);
-    }
-
-    .winner-box strong {
-      display: block;
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .winner-box .name {
-      font-size: 1.7rem;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .winner-box .score {
-      font-size: 0.96rem;
-      color: var(--gold);
-      font-weight: 700;
-    }
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.4fr);
-      gap: 18px;
-    }
-
-    .form-card,
-    .board-card {
-      padding: 22px 20px;
-    }
-
-    .heading-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      gap: 10px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: 1.18rem;
-      letter-spacing: -0.04em;
-    }
-
-    .pill {
-      background: rgba(158, 240, 176, 0.12);
-      color: var(--lime);
-      border: 1px solid rgba(158, 240, 176, 0.35);
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 0.73rem;
-      font-weight: 700;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 9px;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    input,
-    button {
-      font: inherit;
-    }
-
-    input[type="text"],
-    input[type="number"] {
-      width: 100%;
-      padding: 12px 13px;
-      border-radius: 12px;
-      background: rgba(8, 17, 31, 0.7);
-      border: 1px solid var(--line);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus {
-      border-color: rgba(146, 215, 255, 0.7);
-      box-shadow: 0 0 0 3px rgba(146, 215, 255, 0.12);
-    }
-
-    .score-grid {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .score-item {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.02);
-    }
-
-    .score-label {
-      margin-bottom: 0;
-      font-size: 0.8rem;
-      letter-spacing: 0.02em;
-      text-transform: none;
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .score-sub {
-      display: block;
-      margin-top: 2px;
-      color: var(--muted);
-      font-size: 0.7rem;
-      text-transform: none;
-      letter-spacing: 0.01em;
-      font-weight: 400;
-    }
-
-    .score-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .score-wrap input {
-      width: 72px;
-      text-align: center;
-    }
-
-    .score-wrap span {
-      color: var(--muted);
-      font-size: 0.76rem;
-    }
-
-    .submit-btn {
-      width: 100%;
-      margin-top: 18px;
-      border: none;
-      border-radius: 12px;
-      padding: 14px 18px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      color: #07151d;
-      background: linear-gradient(135deg, var(--gold), #ffd77d);
-      cursor: pointer;
-      transition: transform 0.15s ease, filter 0.15s ease;
-    }
-
-    .submit-btn:hover { transform: translateY(-1px); filter: brightness(1.02); }
-    .submit-btn:active { transform: translateY(0); }
-
-    .board-card {
-      min-height: 420px;
-    }
-
-    .board-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .totals {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 18px 0 16px;
-    }
-
-    .stat {
-      padding: 13px 12px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--line);
-    }
-
-    .stat .label {
-      display: block;
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 1.5rem;
-      letter-spacing: -0.05em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px 10px;
-      text-align: left;
-      border-bottom: 1px solid var(--line);
-    }
-
-    th {
-      color: var(--muted);
-      font-size: 0.69rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    td {
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .rank-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--line);
-      margin-right: 10px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--cyan);
-    }
-
-    .winner-row td {
-      background: rgba(246, 200, 95, 0.06);
-    }
-
-    .winner-row .rank-badge {
-      background: rgba(246, 200, 95, 0.25);
-      border-color: rgba(246, 200, 95, 0.6);
-      color: var(--gold);
-    }
-
-    .total-col {
-      color: var(--gold);
-      font-weight: 700;
-    }
-
-    .empty-state {
-      display: grid;
-      place-items: center;
-      min-height: 260px;
-      color: var(--muted);
-      text-align: center;
-      border: 1px dashed var(--line);
-      border-radius: 16px;
-      background: rgba(255,255,255,0.01);
-    }
-
-    .empty-state strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 8px;
-      font-size: 1.06rem;
-    }
-
-    @media (max-width: 860px) {
-      .hero { grid-template-columns: 1fr; }
-      .main-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 520px) {
-      .page { padding: 22px 14px 34px; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .totals { grid-template-columns: 1fr; }
-      th:nth-child(2), td:nth-child(2), th:nth-child(3), td:nth-child(3), th:nth-child(4), td:nth-child(4) {
-        display: none;
-      }
-    }
+    :root { --bg:#08111f; --panel:#111c2c; --line:rgba(255,255,255,.12); --text:#ecf5ff; --muted:#a8bbd5; --gold:#f6c85f; --lime:#9ef0b0; --cyan:#92d7ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--text); font-family:Arial,Helvetica,sans-serif; background:linear-gradient(135deg,#08111f,#101b2d 50%,#0c1d27); }
+    .page { max-width:1100px; margin:auto; padding:32px 18px 52px; }
+    .topbar,.heading,.board-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .topbar { margin-bottom:28px; }
+    .brand { font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .brand span { color:var(--gold); }
+    .status,.pill { padding:9px 13px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:.78rem; }
+    .hero,.main-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; }
+    .hero { margin-bottom:18px; }
+    .card { background:rgba(17,28,44,.92); border:1px solid var(--line); border-radius:18px; box-shadow:0 14px 30px #0004; }
+    .hero-copy,.summary-panel,.form-card,.board-card { padding:22px 20px; }
+    .eyebrow { margin-bottom:10px; color:var(--cyan); font-size:.73rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:0; font-size:clamp(2.2rem,5vw,4rem); line-height:.98; letter-spacing:-.06em; }
+    h2 { margin:0; font-size:1.18rem; letter-spacing:-.04em; }
+    .hero-copy p { margin:16px 0 0; max-width:32rem; color:var(--muted); line-height:1.6; }
+    .summary-panel { display:flex; flex-direction:column; justify-content:center; gap:12px; }
+    .mini-label,.field-label { color:var(--muted); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+    .notice { padding:16px; border:1px solid rgba(146,215,255,.25); border-radius:14px; color:var(--muted); background:rgba(146,215,255,.06); line-height:1.55; font-size:.9rem; }
+    .heading { margin-bottom:18px; }
+    .pill { color:var(--lime); border-color:rgba(158,240,176,.3); background:rgba(158,240,176,.08); }
+    label.field-label { display:block; margin-bottom:8px; }
+    input { font:inherit; }
+    input[type=text],input[type=number] { width:100%; padding:12px 13px; color:var(--text); border:1px solid var(--line); border-radius:12px; outline:none; background:rgba(8,17,31,.7); }
+    input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(146,215,255,.12); }
+    .score-grid { display:grid; gap:12px; margin-top:18px; }
+    .score-item { display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px; padding:11px 12px; border:1px solid var(--line); border-radius:12px; background:#ffffff05; }
+    .score-label { font-size:.85rem; font-weight:700; }
+    .score-sub { display:block; margin-top:3px; color:var(--muted); font-size:.72rem; }
+    .score-wrap { display:flex; align-items:center; gap:8px; }
+    .score-wrap input { width:72px; text-align:center; }
+    .score-wrap span { color:var(--muted); font-size:.76rem; }
+    button { font:inherit; cursor:pointer; }
+    .primary,.secondary { width:100%; margin-top:17px; padding:14px 18px; border:0; border-radius:12px; font-weight:800; }
+    .primary { color:#07151d; background:linear-gradient(135deg,var(--gold),#ffd77d); }
+    .primary:hover,.secondary:hover { filter:brightness(1.06); }
+    .secondary { color:#07151d; background:var(--cyan); }
+    .secondary:disabled { opacity:.5; cursor:not-allowed; }
+    .helper { margin:10px 0 0; color:var(--muted); font-size:.75rem; line-height:1.5; }
+    .board-card { min-height:300px; }
+    .board-head { margin-bottom:16px; }
+    .hidden-results { display:grid; min-height:220px; place-items:center; padding:26px; border:1px dashed var(--line); border-radius:15px; color:var(--muted); text-align:center; line-height:1.6; }
+    .hidden-results strong { display:block; margin-bottom:8px; color:var(--text); font-size:1.08rem; }
+    .totals { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0; }
+    .stat { padding:13px 12px; border:1px solid var(--line); border-radius:12px; background:#ffffff05; }
+    .stat span { display:block; color:var(--muted); font-size:.67rem; letter-spacing:.1em; text-transform:uppercase; }
+    .stat strong { display:block; margin-top:6px; font-size:1.4rem; }
+    .winner { padding:15px; margin-bottom:15px; border:1px solid rgba(246,200,95,.35); border-radius:13px; background:rgba(246,200,95,.08); }
+    .winner span { display:block; color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; }
+    .winner strong { display:block; margin-top:5px; font-size:1.3rem; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:540px; }
+    th,td { padding:12px 9px; border-bottom:1px solid var(--line); text-align:left; }
+    th { color:var(--muted); font-size:.67rem; letter-spacing:.1em; text-transform:uppercase; }
+    td { font-size:.9rem; }
+    .total { color:var(--gold); font-weight:700; }
+    .empty { color:var(--muted); text-align:center; padding:24px 8px; }
+    .hidden { display:none !important; }
+    @media(max-width:800px) { .hero,.main-grid { grid-template-columns:1fr; } }
+    @media(max-width:520px) { .page { padding:22px 14px 34px; } .topbar { align-items:flex-start; flex-direction:column; } .totals { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <div class="page">
     <header class="topbar">
       <div class="brand"><span>Talent</span> Vote</div>
-      <div class="status">Live audience scoring</div>
+      <div class="status" id="status">Voting is open</div>
     </header>
 
     <section class="hero">
       <div class="card hero-copy">
-        <div class="eyebrow">Calling all voters</div>
+        <div class="eyebrow">Audience scoring</div>
         <h1>Pick the standout performer.</h1>
-        <p>
-          Score each performer on song, creativity, and performance. The total is
-          calculated automatically, and the best act rises to the top.
-        </p>
+        <p>Score each performer on song, creativity, and performance. Scores and performer names stay hidden on this device until the organizer closes voting and reveals the results.</p>
       </div>
-
-      <aside class="card summary-panel" aria-live="polite">
-        <div class="mini-label">Current winner</div>
-        <div class="winner-box">
-          <strong>Top performer</strong>
-          <span class="name" id="winner-name">Waiting...</span>
-          <span class="score" id="winner-score">Total: 0</span>
-        </div>
-        <div class="mini-label">Award categories</div>
-        <div class="winner-box">
-          <strong>Best in category</strong>
-          <span class="name" id="award-song">—</span>
-          <span class="score" id="award-song-score">Song awards</span>
-        </div>
+      <aside class="card summary-panel">
+        <div class="mini-label">Private until voting closes</div>
+        <div class="notice" id="vote-notice" aria-live="polite">No results are shown while voting is open. Submit every vote first, then the organizer can reveal the leaderboard.</div>
       </aside>
     </section>
 
     <main class="main-grid">
       <section class="card form-card">
-        <div class="heading-row">
-          <h2>Cast your vote</h2>
-          <span class="pill">3 categories</span>
-        </div>
-
+        <div class="heading"><h2>Cast your vote</h2><span class="pill">3 categories · 1–10</span></div>
         <form id="vote-form">
-          <div>
-            <label for="performer">Performer</label>
-            <input type="text" id="performer" name="performer" placeholder="Enter performer name" required />
-          </div>
-
+          <label class="field-label" for="performer">Performer</label>
+          <input type="text" id="performer" name="performer" maxlength="60" placeholder="Enter performer name" required />
           <div class="score-grid">
-            <div class="score-item">
-              <div>
-                <label class="score-label" for="song">Song</label>
-                <span class="score-sub">Lyrics, melody, and delivery</span>
-              </div>
-              <div class="score-wrap">
-                <input type="number" id="song" name="song" min="1" max="10" value="8" required />
-                <span>/ 10</span>
-              </div>
-            </div>
-
-            <div class="score-item">
-              <div>
-                <label class="score-label" for="creativity">Creativity</label>
-                <span class="score-sub">Originality and innovation</span>
-              </div>
-              <div class="score-wrap">
-                <input type="number" id="creativity" name="creativity" min="1" max="10" value="8" required />
-                <span>/ 10</span>
-              </div>
-            </div>
-
-            <div class="score-item">
-              <div>
-                <label class="score-label" for="performance">Performance</label>
-                <span class="score-sub">Stage presence and impact</span>
-              </div>
-              <div class="score-wrap">
-                <input type="number" id="performance" name="performance" min="1" max="10" value="8" required />
-                <span>/ 10</span>
-              </div>
-            </div>
+            <div class="score-item"><div><div class="score-label">Song</div><span class="score-sub">Song choice, vocals, and delivery</span></div><div class="score-wrap"><input type="number" id="song" name="song" min="1" max="10" value="8" required aria-label="Song score from 1 to 10"/><span>/ 10</span></div></div>
+            <div class="score-item"><div><div class="score-label">Creativity</div><span class="score-sub">Originality and ideas</span></div><div class="score-wrap"><input type="number" id="creativity" name="creativity" min="1" max="10" value="8" required aria-label="Creativity score from 1 to 10"/><span>/ 10</span></div></div>
+            <div class="score-item"><div><div class="score-label">Performance</div><span class="score-sub">Stage presence and impact</span></div><div class="score-wrap"><input type="number" id="performance" name="performance" min="1" max="10" value="8" required aria-label="Performance score from 1 to 10"/><span>/ 10</span></div></div>
           </div>
-
-          <button class="submit-btn" type="submit">Submit vote</button>
+          <button class="primary" id="submit-vote" type="submit">Submit vote</button>
+          <p class="helper">Votes are saved only in this browser on this device. The vote count is visible, but individual names and scores are not.</p>
         </form>
       </section>
 
       <section class="card board-card" aria-live="polite">
-        <div class="board-head">
-          <h2>Leaderboard</h2>
-          <span class="pill" id="vote-total">0 votes</span>
+        <div class="board-head"><h2>Results</h2><span class="pill" id="vote-total">0 votes</span></div>
+        <div class="hidden-results" id="hidden-results"><div><strong>Results are hidden</strong>When all votes have been entered, the organizer can close voting to show the scores and leaderboard.</div></div>
+        <div id="results" class="hidden">
+          <div class="winner"><span>Top performer · average total</span><strong id="winner-name">—</strong><span id="winner-score"></span></div>
+          <div class="totals">
+            <div class="stat"><span>Song average</span><strong id="song-avg">0.0</strong></div>
+            <div class="stat"><span>Creativity average</span><strong id="creative-avg">0.0</strong></div>
+            <div class="stat"><span>Performance average</span><strong id="performance-avg">0.0</strong></div>
+          </div>
+          <div class="table-wrap" id="leaderboard"></div>
         </div>
-
-        <div class="totals">
-          <div class="stat">
-            <span class="label">Song avg.</span>
-            <strong id="song-avg">0.0</strong>
-          </div>
-          <div class="stat">
-            <span class="label">Creative avg.</span>
-            <strong id="creative-avg">0.0</strong>
-          </div>
-          <div class="stat">
-            <span class="label">Performance avg.</span>
-            <strong id="performance-avg">0.0</strong>
-          </div>
-        </div>
-
-        <div id="leaderboard"></div>
+        <button class="secondary" id="reveal-votes" type="button">Close voting &amp; reveal results</button>
+        <p class="helper" id="reveal-help">Use this after every performer has been scored. Closing is saved on this device and stops further votes.</p>
       </section>
     </main>
   </div>
 
   <script>
-    (function () {
-      const STORAGE_KEY = 'talent-vote-board-v1';
+    (() => {
+      const VOTES_KEY = 'talent-vote-board-v1';
+      const CLOSED_KEY = 'talent-vote-board-closed-v1';
       const form = document.getElementById('vote-form');
-      const leaderboard = document.getElementById('leaderboard');
-      const voteTotal = document.getElementById('vote-total');
-      const songAvg = document.getElementById('song-avg');
-      const creativeAvg = document.getElementById('creative-avg');
-      const performanceAvg = document.getElementById('performance-avg');
-      const winnerName = document.getElementById('winner-name');
-      const winnerScore = document.getElementById('winner-score');
-      const awardSong = document.getElementById('award-song');
-      const awardSongScore = document.getElementById('award-song-score');
+      const results = document.getElementById('results');
+      const hiddenResults = document.getElementById('hidden-results');
+      const revealButton = document.getElementById('reveal-votes');
+      const revealHelp = document.getElementById('reveal-help');
+      const status = document.getElementById('status');
 
-      function loadVotes() {
+      function getVotes() {
         try {
-          const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-          if (!Array.isArray(raw)) return [];
-          return raw.filter((vote) => vote && typeof vote.performer === 'string');
-        } catch (error) {
-          return [];
-        }
+          const parsed = JSON.parse(localStorage.getItem(VOTES_KEY) || '[]');
+          return Array.isArray(parsed) ? parsed.filter(v => v && typeof v.performer === 'string' && ['song','creativity','performance'].every(k => Number.isInteger(v[k]) && v[k] >= 1 && v[k] <= 10)) : [];
+        } catch { return []; }
       }
-
-      function saveVotes(votes) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
-      }
-
-      function avg(values) {
-        if (!values.length) return 0;
-        return values.reduce((sum, value) => sum + Number(value), 0) / values.length;
-      }
-
-      function formatScore(value) {
-        return Number(value || 0).toFixed(1);
-      }
-
-      function escapeHtml(value) {
-        return String(value)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildLeaderBoard(votes) {
-        const byPerformer = {};
-
-        votes.forEach((vote) => {
-          const name = vote.performer.trim();
-          if (!name) return;
-          if (!byPerformer[name]) {
-            byPerformer[name] = { performer: name, song: [], creativity: [], performance: [], total: [] };
-          }
-          byPerformer[name].song.push(Number(vote.song));
-          byPerformer[name].creativity.push(Number(vote.creativity));
-          byPerformer[name].performance.push(Number(vote.performance));
-          byPerformer[name].total.push(Number(vote.song) + Number(vote.creativity) + Number(vote.performance));
-        });
-
-        const rows = Object.values(byPerformer)
-          .map((entry) => ({
-            performer: entry.performer,
-            song: avg(entry.song),
-            creativity: avg(entry.creativity),
-            performance: avg(entry.performance),
-            total: avg(entry.total)
-          }))
-          .sort((a, b) => b.total - a.total || a.performer.localeCompare(b.performer));
-
-        if (!rows.length) {
-          leaderboard.innerHTML = '<div class="empty-state"><div><strong>No votes yet</strong><div>Submit the first vote to start the leaderboard.</div></div></div>';
-          return;
-        }
-
-        const top = rows[0];
-        winnerName.textContent = top.performer;
-        winnerScore.textContent = 'Total: ' + formatScore(top.total);
-
-        let songWinner = rows[0];
-        rows.forEach((row) => {
-          if (row.song > songWinner.song) songWinner = row;
-        });
-        awardSong.textContent = songWinner.performer;
-        awardSongScore.textContent = 'Song: ' + formatScore(songWinner.song);
-
-        leaderboard.innerHTML = `
-          <table>
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Performer</th>
-                <th>Song</th>
-                <th>Creativity</th>
-                <th>Performance</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows.map((row, index) => `
-                <tr class="${index === 0 ? 'winner-row' : ''}">
-                  <td><span class="rank-badge">${index + 1}</span></td>
-                  <td>${escapeHtml(row.performer)}</td>
-                  <td>${formatScore(row.song)}</td>
-                  <td>${formatScore(row.creativity)}</td>
-                  <td>${formatScore(row.performance)}</td>
-                  <td class="total-col">${formatScore(row.total)}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        `;
-      }
+      function isClosed() { return localStorage.getItem(CLOSED_KEY) === 'true'; }
+      function average(values) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
+      function score(value) { return value.toFixed(1); }
+      function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
 
       function render() {
-        const votes = loadVotes();
-        voteTotal.textContent = `${votes.length} vote${votes.length === 1 ? '' : 's'}`;
+        const votes = getVotes();
+        const closed = isClosed();
+        document.getElementById('vote-total').textContent = `${votes.length} ${votes.length === 1 ? 'vote' : 'votes'}`;
+        status.textContent = closed ? 'Voting is closed · results revealed' : 'Voting is open';
+        form.querySelectorAll('input,button').forEach(control => { control.disabled = closed; });
+        revealButton.classList.toggle('hidden', closed);
+        revealHelp.classList.toggle('hidden', closed);
+        hiddenResults.classList.toggle('hidden', closed);
+        results.classList.toggle('hidden', !closed);
 
-        if (!votes.length) {
-          songAvg.textContent = '0.0';
-          creativeAvg.textContent = '0.0';
-          performanceAvg.textContent = '0.0';
-          winnerName.textContent = 'Waiting...';
-          winnerScore.textContent = 'Total: 0';
-          awardSong.textContent = '—';
-          awardSongScore.textContent = 'Song awards';
-          buildLeaderBoard([]);
+        if (!closed) return;
+        const grouped = new Map();
+        votes.forEach(vote => {
+          const name = vote.performer.trim();
+          if (!grouped.has(name)) grouped.set(name, { performer:name, song:[], creativity:[], performance:[], total:[] });
+          const row = grouped.get(name);
+          row.song.push(vote.song);
+          row.creativity.push(vote.creativity);
+          row.performance.push(vote.performance);
+          row.total.push(vote.song + vote.creativity + vote.performance);
+        });
+        const rows = [...grouped.values()].map(row => ({
+          performer:row.performer,
+          song:average(row.song),
+          creativity:average(row.creativity),
+          performance:average(row.performance),
+          total:average(row.total)
+        })).sort((a,b) => b.total - a.total || a.performer.localeCompare(b.performer));
+
+        document.getElementById('song-avg').textContent = score(average(votes.map(v => v.song)));
+        document.getElementById('creative-avg').textContent = score(average(votes.map(v => v.creativity)));
+        document.getElementById('performance-avg').textContent = score(average(votes.map(v => v.performance)));
+        if (!rows.length) {
+          document.getElementById('winner-name').textContent = 'No votes submitted';
+          document.getElementById('winner-score').textContent = '';
+          document.getElementById('leaderboard').innerHTML = '<div class="empty">No votes to display.</div>';
           return;
         }
-
-        songAvg.textContent = formatScore(avg(votes.map((vote) => vote.song)));
-        creativeAvg.textContent = formatScore(avg(votes.map((vote) => vote.creativity)));
-        performanceAvg.textContent = formatScore(avg(votes.map((vote) => vote.performance)));
-        buildLeaderBoard(votes);
+        document.getElementById('winner-name').textContent = rows[0].performer;
+        document.getElementById('winner-score').textContent = `Total: ${score(rows[0].total)} / 30`;
+        document.getElementById('leaderboard').innerHTML = `<table><thead><tr><th>Rank</th><th>Performer</th><th>Song</th><th>Creativity</th><th>Performance</th><th>Total / 30</th></tr></thead><tbody>${rows.map((row,i) => `<tr><td>${i+1}</td><td>${escapeHtml(row.performer)}</td><td>${score(row.song)}</td><td>${score(row.creativity)}</td><td>${score(row.performance)}</td><td class="total">${score(row.total)}</td></tr>`).join('')}</tbody></table>`;
       }
 
-      form.addEventListener('submit', function (event) {
+      form.addEventListener('submit', event => {
         event.preventDefault();
-
-        const formData = new FormData(form);
-        const vote = {
-          performer: String(formData.get('performer') || '').trim(),
-          song: Number(formData.get('song')),
-          creativity: Number(formData.get('creativity')),
-          performance: Number(formData.get('performance'))
-        };
-
-        if (!vote.performer) {
-          alert('Please enter a performer name.');
+        if (isClosed() || !form.reportValidity()) return;
+        const data = new FormData(form);
+        const vote = { performer:String(data.get('performer') || '').trim(), song:Number(data.get('song')), creativity:Number(data.get('creativity')), performance:Number(data.get('performance')) };
+        if (!vote.performer || ['song','creativity','performance'].some(k => !Number.isInteger(vote[k]) || vote[k] < 1 || vote[k] > 10)) {
+          alert('Enter a performer and scores from 1 to 10.');
           return;
         }
+        try {
+          const votes = getVotes();
+          votes.push(vote);
+          localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
+          form.reset();
+          ['song','creativity','performance'].forEach(id => { document.getElementById(id).value = 8; });
+          render();
+        } catch { alert('Could not save this vote. Check browser storage settings.'); }
+      });
 
-        const scores = [vote.song, vote.creativity, vote.performance];
-        if (scores.some((value) => Number.isNaN(value) || value < 1 || value > 10)) {
-          alert('Each score must be a number between 1 and 10.');
-          return;
-        }
-
-        const votes = loadVotes();
-        votes.push(vote);
-        saveVotes(votes);
-        form.reset();
-        document.getElementById('song').value = 8;
-        document.getElementById('creativity').value = 8;
-        document.getElementById('performance').value = 8;
-        render();
+      revealButton.addEventListener('click', () => {
+        const votes = getVotes();
+        if (!votes.length) { alert('Submit at least one vote before revealing results.'); return; }
+        if (!window.confirm(`Close voting after ${votes.length} ${votes.length === 1 ? 'vote' : 'votes'} and reveal all results? No more votes can be added on this device.`)) return;
+        try {
+          localStorage.setItem(CLOSED_KEY, 'true');
+          render();
+        } catch { alert('Could not save the voting status.'); }
       });
 
       render();
