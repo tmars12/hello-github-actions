@@ -7,21 +7,23 @@ service cloud.firestore {
     }
 
     match /settings/voting {
-      // Clients need to know whether voting is open, but they must not be able to change it.
+      // Clients may see whether voting is open but may not change it.
       allow read: if true;
       allow write: if false;
     }
 
-    match /votes/{voterId} {
-      // Votes are private while voting is open and become readable when the organizer closes voting.
+    match /votes/{voteId} {
+      // Votes are private while voting is open. They become readable after closing.
       allow read: if votingIsOpen() == false;
 
-      // Each anonymous Firebase account may create one immutable vote, stored under its UID.
+      // A voter may create a single immutable document for each normalized performer name.
+      // The app forms the ID as {anonymous UID}_{normalized performer name}.
       allow create: if request.auth != null
-        && request.auth.uid == voterId
+        && voteId.matches('^' + request.auth.uid + '_[a-z0-9-]{1,60}$')
         && votingIsOpen()
-        && request.resource.data.keys().hasAll(['performer', 'song', 'creativity', 'performance', 'createdAt'])
-        && request.resource.data.keys().hasOnly(['performer', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.keys().hasAll(['performer', 'voterUid', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['performer', 'voterUid', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.voterUid == request.auth.uid
         && request.resource.data.performer is string
         && request.resource.data.performer.size() > 0
         && request.resource.data.performer.size() <= 60
@@ -36,6 +38,7 @@ service cloud.firestore {
         && request.resource.data.performance <= 10
         && request.resource.data.createdAt == request.time;
 
+      // Existing vote documents cannot be overwritten or removed.
       allow update, delete: if false;
     }
   }
