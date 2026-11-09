@@ -1,0 +1,42 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function votingIsOpen() {
+      return get(/databases/$(database)/documents/settings/voting).data.open == true;
+    }
+
+    match /settings/voting {
+      // Clients need to know whether voting is open, but they must not be able to change it.
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /votes/{voterId} {
+      // Votes are private while voting is open and become readable when the organizer closes voting.
+      allow read: if votingIsOpen() == false;
+
+      // Each anonymous Firebase account may create one immutable vote, stored under its UID.
+      allow create: if request.auth != null
+        && request.auth.uid == voterId
+        && votingIsOpen()
+        && request.resource.data.keys().hasAll(['performer', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['performer', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.performer is string
+        && request.resource.data.performer.size() > 0
+        && request.resource.data.performer.size() <= 60
+        && request.resource.data.song is int
+        && request.resource.data.song >= 1
+        && request.resource.data.song <= 10
+        && request.resource.data.creativity is int
+        && request.resource.data.creativity >= 1
+        && request.resource.data.creativity <= 10
+        && request.resource.data.performance is int
+        && request.resource.data.performance >= 1
+        && request.resource.data.performance <= 10
+        && request.resource.data.createdAt == request.time;
+
+      allow update, delete: if false;
+    }
+  }
+}
