@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function votingIsOpen() {
+      return get(/databases/$(database)/documents/settings/voting).data.open == true;
+    }
+
+    match /settings/voting {
+      // Clients may see whether voting is open but may not change it.
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /votes/{voteId} {
+      // Votes are private while voting is open. They become readable after closing.
+      allow read: if votingIsOpen() == false;
+
+      // A voter may create a single immutable document for each normalized performer name.
+      // The app forms the ID as {anonymous UID}_{normalized performer name}.
+      allow create: if request.auth != null
+        && voteId.matches('^' + request.auth.uid + '_[a-z0-9-]{1,60}$')
+        && votingIsOpen()
+        && request.resource.data.keys().hasAll(['performer', 'voterUid', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['performer', 'voterUid', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.voterUid == request.auth.uid
+        && request.resource.data.performer is string
+        && request.resource.data.performer.size() > 0
+        && request.resource.data.performer.size() <= 60
+        && request.resource.data.song is int
+        && request.resource.data.song >= 1
+        && request.resource.data.song <= 10
+        && request.resource.data.creativity is int
+        && request.resource.data.creativity >= 1
+        && request.resource.data.creativity <= 10
+        && request.resource.data.performance is int
+        && request.resource.data.performance >= 1
+        && request.resource.data.performance <= 10
+        && request.resource.data.createdAt == request.time;
+
+      // Existing vote documents cannot be overwritten or removed.
+      allow update, delete: if false;
+    }
+  }
+}

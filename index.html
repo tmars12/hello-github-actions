@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <title>Talent Vote Board</title>
+  <style>
+    :root{--bg:#08111f;--line:#ffffff20;--text:#ecf5ff;--muted:#a8bbd5;--gold:#f6c85f;--cyan:#92d7ff;--green:#9ef0b0;--red:#ffb3b3}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#08111f,#101b2d 55%,#0c1d27);color:var(--text);font:16px Arial,Helvetica,sans-serif}.page{max-width:1050px;margin:auto;padding:28px 18px 48px}.top,.row,.board-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.top{margin-bottom:26px}.brand{font-weight:bold;letter-spacing:.1em;text-transform:uppercase}.brand span{color:var(--gold)}.pill{padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.78rem}.hero,.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}.hero{margin-bottom:16px}.card{padding:22px;background:#111c2cf2;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 30px #0004}.eyebrow{color:var(--cyan);font-size:.75rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase}h1{margin:10px 0;font-size:clamp(2rem,5vw,3.8rem);letter-spacing:-.05em;line-height:1}h2{margin:0;font-size:1.2rem}.muted{color:var(--muted);line-height:1.55}.notice{padding:14px;border:1px solid #92d7ff44;border-radius:12px;color:var(--muted);background:#92d7ff0d;font-size:.9rem;line-height:1.55}.row{margin-bottom:17px}label{display:block;margin:15px 0 7px;color:var(--muted);font-size:.78rem;font-weight:bold;letter-spacing:.06em;text-transform:uppercase}input{font:inherit}input[type=text],input[type=number]{width:100%;padding:12px;color:var(--text);border:1px solid var(--line);border-radius:10px;background:#08111f;outline:none}input:focus{border-color:var(--cyan)}.score{display:grid;grid-template-columns:1fr 78px;align-items:center;gap:12px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.score strong{display:block}.score small{color:var(--muted)}.score input{text-align:center}.button{width:100%;margin-top:17px;padding:13px;border:0;border-radius:10px;background:var(--gold);color:#111;font-weight:bold;font-size:1rem;cursor:pointer}.button:hover{filter:brightness(1.05)}.button:disabled{opacity:.55;cursor:not-allowed}.helper{color:var(--muted);font-size:.78rem;line-height:1.5}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:17px 0}.stat{padding:12px;border:1px solid var(--line);border-radius:11px}.stat span{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase}.stat strong{display:block;margin-top:6px;font-size:1.35rem}.winner{margin:14px 0;padding:14px;border:1px solid #f6c85f55;border-radius:11px;background:#f6c85f0e}.winner span{color:var(--muted);font-size:.75rem}.winner strong{display:block;margin-top:6px;font-size:1.2rem}.table-wrap{overflow:auto}table{width:100%;min-width:500px;border-collapse:collapse}th,td{padding:11px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:.68rem;text-transform:uppercase}td{font-size:.87rem}.total{color:var(--gold);font-weight:bold}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}.done{padding:14px;margin-top:14px;border-radius:12px;border:1px solid #9ef0b055;background:#9ef0b00d;color:var(--green);line-height:1.5}.error{color:var(--red)}@media(max-width:760px){.hero,.columns{grid-template-columns:1fr}.page{padding:20px 14px 32px}}@media(max-width:430px){.stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="top"><div class="brand"><span>Talent</span> Vote</div><div class="pill" id="status">Connecting…</div></header>
+    <section class="hero">
+      <div class="card"><div class="eyebrow">Audience scoring</div><h1>Pick the standout performer.</h1><p class="muted">Vote once for each performer. After a successful vote, the form clears so you can enter the next performer.</p></div>
+      <div class="card"><div class="eyebrow">Anonymous shared voting</div><p class="notice">Votes are shared through Firebase. Each anonymous account can vote once for a performer name. Results remain hidden until voting is closed.</p></div>
+    </section>
+    <section class="columns">
+      <section class="card">
+        <div class="row"><h2>Your vote</h2><span class="pill">Scores 1–10</span></div>
+        <form id="vote-form" class="hidden">
+          <label for="performer">Performer</label><input id="performer" name="performer" type="text" maxlength="60" placeholder="Enter performer name" required>
+          <div class="score"><div><strong>Song</strong><small>Song choice, vocals, delivery</small></div><input id="song" name="song" type="number" min="1" max="10" value="8" required aria-label="Song score"></div>
+          <div class="score"><div><strong>Creativity</strong><small>Originality and ideas</small></div><input id="creativity" name="creativity" type="number" min="1" max="10" value="8" required aria-label="Creativity score"></div>
+          <div class="score"><div><strong>Performance</strong><small>Stage presence and impact</small></div><input id="performance" name="performance" type="number" min="1" max="10" value="8" required aria-label="Performance score"></div>
+          <button class="button" type="submit">Submit vote</button>
+          <p class="helper">Submit a separate vote for each performer. A duplicate vote for the same normalized name is rejected.</p>
+        </form>
+        <div id="vote-done" class="done hidden" role="status" aria-live="polite"></div>
+        <div id="loading" class="empty">Connecting securely to the voting service…</div>
+        <div id="error-message" class="notice error hidden" role="alert"></div>
+      </section>
+      <section class="card" aria-live="polite">
+        <div class="board-head"><h2>Leaderboard</h2><span class="pill" id="vote-count">Hidden until voting closes</span></div>
+        <div id="hidden-state" class="empty">Names and scores stay private while voting is open.</div>
+        <div id="results" class="hidden">
+          <div class="winner"><span>Top performer · total score</span><strong id="winner-name">—</strong><span id="winner-score"></span></div>
+          <div class="stats"><div class="stat"><span>Song total</span><strong id="song-average">—</strong></div><div class="stat"><span>Creativity total</span><strong id="creativity-average">—</strong></div><div class="stat"><span>Performance total</span><strong id="performance-average">—</strong></div></div>
+          <div class="table-wrap" id="table"></div>
+        </div>
+        <p class="helper">To close voting and reveal results, set <code>settings/voting</code> → <code>open</code> to <code>false</code> in Firestore.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { getFirestore, doc, onSnapshot, setDoc, collection, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBEPYBq_gf6NqkfOUKGuaAsBC6yO-fvqdg',
+      authDomain: 'thanking-voting.firebaseapp.com',
+      projectId: 'thanking-voting',
+      storageBucket: 'thanking-voting.firebasestorage.app',
+      messagingSenderId: '196658577507',
+      appId: '1:196658577507:web:f669f13e2a60c023dd3856',
+      measurementId: 'G-R3P1D8Z0TM'
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const settingsRef = doc(db, 'settings', 'voting');
+    const form = document.getElementById('vote-form');
+    const done = document.getElementById('vote-done');
+    const loading = document.getElementById('loading');
+    const errorBox = document.getElementById('error-message');
+    let currentUser = null;
+    let isOpen = true;
+
+    function setError(message) { errorBox.textContent = message; errorBox.classList.remove('hidden'); loading.classList.add('hidden'); }
+    function performerKey(name) {
+      return String(name).normalize('NFKC').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'performer';
+    }
+    function total(values) { return values.reduce((sum, value) => sum + Number(value || 0), 0); }
+    function fmt(value) { return String(Math.round(Number(value || 0))); }
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+
+    async function renderResults() {
+      const snapshot = await getDocs(collection(db, 'votes'));
+      const votes = snapshot.docs.map(item => item.data());
+      document.getElementById('vote-count').textContent = `${votes.length} ${votes.length === 1 ? 'vote' : 'votes'}`;
+      const groups = new Map();
+      votes.forEach(vote => {
+        const name = vote.performer.trim();
+        if (!groups.has(name)) groups.set(name, {name, song:[], creativity:[], performance:[], total:[]});
+        const group = groups.get(name);
+        group.song.push(vote.song); group.creativity.push(vote.creativity); group.performance.push(vote.performance);
+        group.total.push(vote.song + vote.creativity + vote.performance);
+      });
+      const rows = [...groups.values()].map(group => ({
+        name: group.name,
+        song: total(group.song),
+        creativity: total(group.creativity),
+        performance: total(group.performance),
+        total: total(group.total)
+      })).sort((a,b) => b.total - a.total || a.name.localeCompare(b.name));
+
+      document.getElementById('song-average').textContent = votes.length ? fmt(total(votes.map(v => v.song))) : '—';
+      document.getElementById('creativity-average').textContent = votes.length ? fmt(total(votes.map(v => v.creativity))) : '—';
+      document.getElementById('performance-average').textContent = votes.length ? fmt(total(votes.map(v => v.performance))) : '—';
+      if (!rows.length) {
+        document.getElementById('winner-name').textContent = 'No votes submitted';
+        document.getElementById('winner-score').textContent = '';
+        document.getElementById('table').innerHTML = '<div class="empty">No votes to show.</div>';
+        return;
+      }
+      document.getElementById('winner-name').textContent = rows[0].name;
+      document.getElementById('winner-score').textContent = `Score ${fmt(rows[0].total)}`;
+      document.getElementById('table').innerHTML = `<table><thead><tr><th>Rank</th><th>Performer</th><th>Song</th><th>Creativity</th><th>Performance</th><th>Total</th></tr></thead><tbody>${rows.map((row,index) => `<tr><td>${index+1}</td><td>${escapeHtml(row.name)}</td><td>${fmt(row.song)}</td><td>${fmt(row.creativity)}</td><td>${fmt(row.performance)}</td><td class="total">${fmt(row.total)}</td></tr>`).join('')}</tbody></table>`;
+    }
+
+    function render() {
+      const closed = !isOpen;
+      document.getElementById('status').textContent = closed ? 'Voting closed · results revealed' : 'Voting is open';
+      form.classList.toggle('hidden', closed || !currentUser);
+      loading.classList.toggle('hidden', Boolean(currentUser) || !errorBox.classList.contains('hidden'));
+      document.getElementById('hidden-state').classList.toggle('hidden', closed);
+      document.getElementById('results').classList.toggle('hidden', !closed);
+      if (closed) renderResults().catch(error => { console.error(error); setError('Could not load results. Check that the updated Firestore rules are published.'); });
+    }
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!currentUser || !isOpen || !form.reportValidity()) return;
+      const data = new FormData(form);
+      const performer = String(data.get('performer') || '').trim();
+      const vote = {
+        performer,
+        voterUid: currentUser.uid,
+        song: Number(data.get('song')),
+        creativity: Number(data.get('creativity')),
+        performance: Number(data.get('performance')),
+        createdAt: serverTimestamp()
+      };
+      if (!performer || ['song','creativity','performance'].some(key => !Number.isInteger(vote[key]) || vote[key] < 1 || vote[key] > 10)) {
+        alert('Enter a performer and scores from 1 to 10.');
+        return;
+      }
+      const button = form.querySelector('button[type="submit"]');
+      button.disabled = true;
+      done.classList.add('hidden');
+      try {
+        const voteId = `${currentUser.uid}_${performerKey(performer)}`;
+        await setDoc(doc(db, 'votes', voteId), vote);
+        done.textContent = `Vote for ${performer} recorded. You can now submit a vote for another performer.`;
+        done.classList.remove('hidden');
+        form.reset();
+        ['song','creativity','performance'].forEach(id => { document.getElementById(id).value = 8; });
+        document.getElementById('performer').focus();
+      } catch (error) {
+        console.error('Vote submission failed:', error);
+        done.textContent = `Could not save this vote. If you have already voted for ${performer}, use the same name only once. Otherwise check the updated Firestore rules and Anonymous Authentication.`;
+        done.classList.remove('hidden');
+        done.style.color = 'var(--red)';
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    async function start() {
+      try {
+        await signInAnonymously(auth);
+        onAuthStateChanged(auth, user => { currentUser = user; render(); });
+        onSnapshot(settingsRef, snapshot => {
+          if (!snapshot.exists() || typeof snapshot.data().open !== 'boolean') {
+            setError('Voting is not configured. Create settings/voting with boolean field open: true in Firestore.');
+            return;
+          }
+          isOpen = snapshot.data().open;
+          errorBox.classList.add('hidden');
+          render();
+        }, error => {
+          console.error('Settings read failed:', error);
+          setError('Cannot read voting settings. Check the Firestore database and published rules.');
+        });
+      } catch (error) {
+        console.error('Firebase startup failed:', error);
+        setError('Firebase could not start. Enable Anonymous Authentication and create the Firestore database.');
+      }
+    }
+    start();
+  </script>
+</body>
+</html>
