@@ -28,16 +28,16 @@ service cloud.firestore {
         && request.resource.data.performer.size() > 0
         && request.resource.data.performer.size() <= 60
         && request.resource.data.song is int
-        && request.resource.data.song >= 1
+        && request.resource.data.song >= 0
         && request.resource.data.song <= 10
         && request.resource.data.creativity is int
-        && request.resource.data.creativity >= 1
+        && request.resource.data.creativity >= 0
         && request.resource.data.creativity <= 10
         && request.resource.data.performance is int
-        && request.resource.data.performance >= 1
+        && request.resource.data.performance >= 0
         && request.resource.data.performance <= 10
         && request.resource.data.costume is int
-        && request.resource.data.costume >= 1
+        && request.resource.data.costume >= 0
         && request.resource.data.costume <= 10
         && request.resource.data.createdAt == request.time;
 
