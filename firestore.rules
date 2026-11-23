@@ -21,8 +21,8 @@ service cloud.firestore {
       allow create: if request.auth != null
         && voteId.matches('^' + request.auth.uid + '_[a-z0-9-]{1,60}$')
         && votingIsOpen()
-        && request.resource.data.keys().hasAll(['performer', 'voterUid', 'song', 'creativity', 'performance', 'createdAt'])
-        && request.resource.data.keys().hasOnly(['performer', 'voterUid', 'song', 'creativity', 'performance', 'createdAt'])
+        && request.resource.data.keys().hasAll(['performer', 'voterUid', 'song', 'creativity', 'performance', 'costume', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['performer', 'voterUid', 'song', 'creativity', 'performance', 'costume', 'createdAt'])
         && request.resource.data.voterUid == request.auth.uid
         && request.resource.data.performer is string
         && request.resource.data.performer.size() > 0
@@ -36,6 +36,9 @@ service cloud.firestore {
         && request.resource.data.performance is int
         && request.resource.data.performance >= 1
         && request.resource.data.performance <= 10
+        && request.resource.data.costume is int
+        && request.resource.data.costume >= 1
+        && request.resource.data.costume <= 10
         && request.resource.data.createdAt == request.time;
 
       // Existing vote documents cannot be overwritten or removed.

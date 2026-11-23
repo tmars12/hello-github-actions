@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#08111f">
   <title>Talent Vote Board</title>
   <style>
-    :root{--bg:#08111f;--line:#ffffff20;--text:#ecf5ff;--muted:#a8bbd5;--gold:#f6c85f;--cyan:#92d7ff;--green:#9ef0b0;--red:#ffb3b3}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#08111f,#101b2d 55%,#0c1d27);color:var(--text);font:16px Arial,Helvetica,sans-serif}.page{max-width:1050px;margin:auto;padding:28px 18px 48px}.top,.row,.board-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.top{margin-bottom:26px}.brand{font-weight:bold;letter-spacing:.1em;text-transform:uppercase}.brand span{color:var(--gold)}.pill{padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.78rem}.hero,.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}.hero{margin-bottom:16px}.card{padding:22px;background:#111c2cf2;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 30px #0004}.eyebrow{color:var(--cyan);font-size:.75rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase}h1{margin:10px 0;font-size:clamp(2rem,5vw,3.8rem);letter-spacing:-.05em;line-height:1}h2{margin:0;font-size:1.2rem}.muted{color:var(--muted);line-height:1.55}.notice{padding:14px;border:1px solid #92d7ff44;border-radius:12px;color:var(--muted);background:#92d7ff0d;font-size:.9rem;line-height:1.55}.row{margin-bottom:17px}label{display:block;margin:15px 0 7px;color:var(--muted);font-size:.78rem;font-weight:bold;letter-spacing:.06em;text-transform:uppercase}input{font:inherit}input[type=text],input[type=number]{width:100%;padding:12px;color:var(--text);border:1px solid var(--line);border-radius:10px;background:#08111f;outline:none}input:focus{border-color:var(--cyan)}.score{display:grid;grid-template-columns:1fr 78px;align-items:center;gap:12px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.score strong{display:block}.score small{color:var(--muted)}.score input{text-align:center}.button{width:100%;margin-top:17px;padding:13px;border:0;border-radius:10px;background:var(--gold);color:#111;font-weight:bold;font-size:1rem;cursor:pointer}.button:hover{filter:brightness(1.05)}.button:disabled{opacity:.55;cursor:not-allowed}.helper{color:var(--muted);font-size:.78rem;line-height:1.5}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:17px 0}.stat{padding:12px;border:1px solid var(--line);border-radius:11px}.stat span{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase}.stat strong{display:block;margin-top:6px;font-size:1.35rem}.winner{margin:14px 0;padding:14px;border:1px solid #f6c85f55;border-radius:11px;background:#f6c85f0e}.winner span{color:var(--muted);font-size:.75rem}.winner strong{display:block;margin-top:6px;font-size:1.2rem}.table-wrap{overflow:auto}table{width:100%;min-width:500px;border-collapse:collapse}th,td{padding:11px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:.68rem;text-transform:uppercase}td{font-size:.87rem}.total{color:var(--gold);font-weight:bold}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}.done{padding:14px;margin-top:14px;border-radius:12px;border:1px solid #9ef0b055;background:#9ef0b00d;color:var(--green);line-height:1.5}.error{color:var(--red)}@media(max-width:760px){.hero,.columns{grid-template-columns:1fr}.page{padding:20px 14px 32px}}@media(max-width:430px){.stats{grid-template-columns:1fr}}
+    :root{--bg:#08111f;--line:#ffffff20;--text:#ecf5ff;--muted:#a8bbd5;--gold:#f6c85f;--cyan:#92d7ff;--green:#9ef0b0;--red:#ffb3b3}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#08111f,#101b2d 55%,#0c1d27);color:var(--text);font:16px Arial,Helvetica,sans-serif}.page{max-width:1050px;margin:auto;padding:28px 18px 48px}.top,.row,.board-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.top{margin-bottom:26px}.brand{font-weight:bold;letter-spacing:.1em;text-transform:uppercase}.brand span{color:var(--gold)}.pill{padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.78rem}.hero,.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}.hero{margin-bottom:16px}.card{padding:22px;background:#111c2cf2;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 30px #0004}.eyebrow{color:var(--cyan);font-size:.75rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase}h1{margin:10px 0;font-size:clamp(2rem,5vw,3.8rem);letter-spacing:-.05em;line-height:1}h2{margin:0;font-size:1.2rem}.muted{color:var(--muted);line-height:1.55}.notice{padding:14px;border:1px solid #92d7ff44;border-radius:12px;color:var(--muted);background:#92d7ff0d;font-size:.9rem;line-height:1.55}.row{margin-bottom:17px}label{display:block;margin:15px 0 7px;color:var(--muted);font-size:.78rem;font-weight:bold;letter-spacing:.06em;text-transform:uppercase}input{font:inherit}input[type=text],input[type=number]{width:100%;padding:12px;color:var(--text);border:1px solid var(--line);border-radius:10px;background:#08111f;outline:none}input:focus{border-color:var(--cyan)}.score{display:grid;grid-template-columns:1fr 78px;align-items:center;gap:12px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.score strong{display:block}.score small{color:var(--muted)}.score input{text-align:center}.button{width:100%;margin-top:17px;padding:13px;border:0;border-radius:10px;background:var(--gold);color:#111;font-weight:bold;font-size:1rem;cursor:pointer}.button:hover{filter:brightness(1.05)}.button:disabled{opacity:.55;cursor:not-allowed}.helper{color:var(--muted);font-size:.78rem;line-height:1.5}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:17px 0}.stat{padding:12px;border:1px solid var(--line);border-radius:11px}.stat span{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase}.stat strong{display:block;margin-top:6px;font-size:1.35rem}.winner{margin:14px 0;padding:14px;border:1px solid #f6c85f55;border-radius:11px;background:#f6c85f0e}.winner span{color:var(--muted);font-size:.75rem}.winner strong{display:block;margin-top:6px;font-size:1.2rem}.table-wrap{overflow:auto}table{width:100%;min-width:500px;border-collapse:collapse}th,td{padding:11px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:.68rem;text-transform:uppercase}td{font-size:.87rem}.total{color:var(--gold);font-weight:bold}.empty{padding:32px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}.done{padding:14px;margin-top:14px;border-radius:12px;border:1px solid #9ef0b055;background:#9ef0b00d;color:var(--green);line-height:1.5}.error{color:var(--red)}@media(max-width:760px){.hero,.columns{grid-template-columns:1fr}.page{padding:20px 14px 32px}}@media(max-width:430px){.stats{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -23,6 +23,7 @@
           <label for="performer">Performer</label><input id="performer" name="performer" type="text" maxlength="60" placeholder="Enter performer name" required>
           <div class="score"><div><strong>Song</strong><small>Song choice, vocals, delivery</small></div><input id="song" name="song" type="number" min="1" max="10" value="8" required aria-label="Song score"></div>
           <div class="score"><div><strong>Creativity</strong><small>Originality and ideas</small></div><input id="creativity" name="creativity" type="number" min="1" max="10" value="8" required aria-label="Creativity score"></div>
+          <div class="score"><div><strong>Best Costume</strong><small>Visual style and originality</small></div><input id="costume" name="costume" type="number" min="1" max="10" value="8" required aria-label="Best Costume score"></div>
           <div class="score"><div><strong>Performance</strong><small>Stage presence and impact</small></div><input id="performance" name="performance" type="number" min="1" max="10" value="8" required aria-label="Performance score"></div>
           <button class="button" type="submit">Submit vote</button>
           <p class="helper">Submit a separate vote for each performer. A duplicate vote for the same normalized name is rejected.</p>
@@ -36,7 +37,7 @@
         <div id="hidden-state" class="empty">Names and scores stay private while voting is open.</div>
         <div id="results" class="hidden">
           <div class="winner"><span>Top performer · total score</span><strong id="winner-name">—</strong><span id="winner-score"></span></div>
-          <div class="stats"><div class="stat"><span>Song total</span><strong id="song-average">—</strong></div><div class="stat"><span>Creativity total</span><strong id="creativity-average">—</strong></div><div class="stat"><span>Performance total</span><strong id="performance-average">—</strong></div></div>
+          <div class="stats"><div class="stat"><span>Song total</span><strong id="song-average">—</strong></div><div class="stat"><span>Creativity total</span><strong id="creativity-average">—</strong></div><div class="stat"><span>Performance total</span><strong id="performance-average">—</strong></div><div class="stat"><span>Costume total</span><strong id="costume-average">—</strong></div></div>
           <div class="table-wrap" id="table"></div>
         </div>
         <p class="helper">To close voting and reveal results, set <code>settings/voting</code> → <code>open</code> to <code>false</code> in Firestore.</p>
@@ -83,22 +84,25 @@
       const groups = new Map();
       votes.forEach(vote => {
         const name = vote.performer.trim();
-        if (!groups.has(name)) groups.set(name, {name, song:[], creativity:[], performance:[], total:[]});
+        if (!groups.has(name)) groups.set(name, {name, song:[], creativity:[], performance:[], costume:[], total:[]});
         const group = groups.get(name);
         group.song.push(vote.song); group.creativity.push(vote.creativity); group.performance.push(vote.performance);
-        group.total.push(vote.song + vote.creativity + vote.performance);
+        group.costume.push(Number(vote.costume) || 0);
+        group.total.push(vote.song + vote.creativity + vote.performance + (Number(vote.costume) || 0));
       });
       const rows = [...groups.values()].map(group => ({
         name: group.name,
         song: total(group.song),
         creativity: total(group.creativity),
         performance: total(group.performance),
+        costume: total(group.costume),
         total: total(group.total)
       })).sort((a,b) => b.total - a.total || a.name.localeCompare(b.name));
 
       document.getElementById('song-average').textContent = votes.length ? fmt(total(votes.map(v => v.song))) : '—';
       document.getElementById('creativity-average').textContent = votes.length ? fmt(total(votes.map(v => v.creativity))) : '—';
       document.getElementById('performance-average').textContent = votes.length ? fmt(total(votes.map(v => v.performance))) : '—';
+      document.getElementById('costume-average').textContent = votes.length ? fmt(total(votes.map(v => Number(v.costume) || 0))) : '—';
       if (!rows.length) {
         document.getElementById('winner-name').textContent = 'No votes submitted';
         document.getElementById('winner-score').textContent = '';
@@ -107,7 +111,7 @@
       }
       document.getElementById('winner-name').textContent = rows[0].name;
       document.getElementById('winner-score').textContent = `Score ${fmt(rows[0].total)}`;
-      document.getElementById('table').innerHTML = `<table><thead><tr><th>Rank</th><th>Performer</th><th>Song</th><th>Creativity</th><th>Performance</th><th>Total</th></tr></thead><tbody>${rows.map((row,index) => `<tr><td>${index+1}</td><td>${escapeHtml(row.name)}</td><td>${fmt(row.song)}</td><td>${fmt(row.creativity)}</td><td>${fmt(row.performance)}</td><td class="total">${fmt(row.total)}</td></tr>`).join('')}</tbody></table>`;
+      document.getElementById('table').innerHTML = `<table><thead><tr><th>Rank</th><th>Performer</th><th>Song</th><th>Creativity</th><th>Performance</th><th>Costume</th><th>Total</th></tr></thead><tbody>${rows.map((row,index) => `<tr><td>${index+1}</td><td>${escapeHtml(row.name)}</td><td>${fmt(row.song)}</td><td>${fmt(row.creativity)}</td><td>${fmt(row.performance)}</td><td>${fmt(row.costume)}</td><td class="total">${fmt(row.total)}</td></tr>`).join('')}</tbody></table>`;
     }
 
     function render() {
@@ -131,9 +135,10 @@
         song: Number(data.get('song')),
         creativity: Number(data.get('creativity')),
         performance: Number(data.get('performance')),
+        costume: Number(data.get('costume')),
         createdAt: serverTimestamp()
       };
-      if (!performer || ['song','creativity','performance'].some(key => !Number.isInteger(vote[key]) || vote[key] < 1 || vote[key] > 10)) {
+      if (!performer || ['song','creativity','performance','costume'].some(key => !Number.isInteger(vote[key]) || vote[key] < 1 || vote[key] > 10)) {
         alert('Enter a performer and scores from 1 to 10.');
         return;
       }
@@ -146,7 +151,7 @@
         done.textContent = `Vote for ${performer} recorded. You can now submit a vote for another performer.`;
         done.classList.remove('hidden');
         form.reset();
-        ['song','creativity','performance'].forEach(id => { document.getElementById(id).value = 8; });
+        ['song','creativity','performance','costume'].forEach(id => { document.getElementById(id).value = 8; });
         document.getElementById('performer').focus();
       } catch (error) {
         console.error('Vote submission failed:', error);
